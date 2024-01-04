@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "721996489807",
+    "project_id": "connect-prod-76d73",
+    "storage_bucket": "connect-prod-76d73.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:721996489807:android:b99b849b0812a76f02b63a",
+        "android_client_info": {
+          "package_name": "com.brillantetechnology.connect"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "721996489807-vh5mt6odsi825jel334d8sh6m6n91b4i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByjsQr4I9Hjj10woe9OvkjxRfbZxW3Vn0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "721996489807-vh5mt6odsi825jel334d8sh6m6n91b4i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

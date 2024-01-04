@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>721996489807-fce41hmi9bhpodpbe5qhgit51t0vhnmo.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.721996489807-fce41hmi9bhpodpbe5qhgit51t0vhnmo</string>
+	<key>API_KEY</key>
+	<string>AIzaSyD9F6djFW9Av07GOY1LWDClSMSCOrZlEtE</string>
+	<key>GCM_SENDER_ID</key>
+	<string>721996489807</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.brillantetechnology.connect</string>
+	<key>PROJECT_ID</key>
+	<string>connect-prod-76d73</string>
+	<key>STORAGE_BUCKET</key>
+	<string>connect-prod-76d73.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:721996489807:ios:02d189fa736c9ccf02b63a</string>
+</dict>
+</plist>
