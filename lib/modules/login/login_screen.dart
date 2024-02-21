@@ -12,8 +12,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
-  static MaterialPage<void> page() =>
-      const MaterialPage<void>(child: LoginScreen());
+  static MaterialPage<void> page() => const MaterialPage<void>(child: LoginScreen());
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -41,8 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
       },
       child: BlocProvider<LoginBloc>(
         create: (BuildContext context) => LoginBloc(
-          authenticationRepository:
-              RepositoryProvider.of<AuthenticationRepository>(context),
+          authenticationRepository: RepositoryProvider.of<AuthenticationRepository>(context),
         ),
         child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
@@ -124,17 +122,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                     obscureText: !_isPasswordVisible,
                                     suffixIcon: IconButton(
                                       onPressed: () {
-                                        _isPasswordVisible =
-                                            !_isPasswordVisible;
+                                        _isPasswordVisible = !_isPasswordVisible;
                                         setState(() {});
                                       },
                                       icon: Icon(
                                         _isPasswordVisible
                                             ? Icons.visibility_rounded
                                             : Icons.visibility_off_rounded,
-                                        color: _isPasswordVisible
-                                            ? Colors.blueGrey
-                                            : Colors.grey,
+                                        color: _isPasswordVisible ? Colors.blueGrey : Colors.grey,
                                       ),
                                     ),
                                   ),
@@ -266,6 +261,9 @@ class _LoginScreenState extends State<LoginScreen> {
               backgroundColor: MaterialStateProperty.all<Color>(
                 Colors.blueGrey,
               ),
+              foregroundColor: MaterialStateProperty.all<Color>(
+                Colors.white,
+              ),
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(50.0),
@@ -310,8 +308,10 @@ class _LoginScreenState extends State<LoginScreen> {
               );
             }
           },
-          child:
-              TextWidget().latoTextWidget(text: 'Sign up', color: Colors.blue),
+          child: TextWidget().latoTextWidget(
+            text: 'Sign up',
+            color: Colors.blue,
+          ),
         ),
       ],
     );
@@ -358,9 +358,9 @@ class _LoginScreenState extends State<LoginScreen> {
               ? TextButton(
                   onPressed: () async {
                     Navigator.pop(ctx);
-                    context
-                        .read<LoginBloc>()
-                        .add(const LoginEvent.sendVerificationEmail());
+                    context.read<LoginBloc>().add(
+                          const LoginEvent.sendVerificationEmail(),
+                        );
                   },
                   child: Text(
                     'Resend link',
