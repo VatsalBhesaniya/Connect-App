@@ -21,8 +21,7 @@ class AuthenticationRepository {
     required String password,
   }) async {
     try {
-      final UserCredential firebaseUser =
-          await FirebaseAuth.instance.signInWithEmailAndPassword(
+      final UserCredential firebaseUser = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -66,6 +65,30 @@ class AuthenticationRepository {
     }
   }
 
+  Future<ApiResult<String?>> deleteAccount({
+    required ConnectUser user,
+    required String password,
+  }) async {
+    try {
+      final AuthCredential credentials =
+          EmailAuthProvider.credential(email: user.email, password: password);
+      final UserCredential result =
+          await FirebaseAuth.instance.currentUser!.reauthenticateWithCredential(credentials);
+      await FirebaseFirestore.instance.collection('users').doc(user.id).delete();
+      await result.user!.delete();
+      _controller.add(AuthenticationStatus.unauthenticated);
+      return const ApiResult<String?>.success(data: null);
+    } on FirebaseAuthException catch (e) {
+      return ApiResult<String?>.failure(
+        error: NetworkExceptions.firebaseError(code: e.code),
+      );
+    } on Exception catch (e) {
+      return ApiResult<String?>.failure(
+        error: NetworkExceptions.exception(error: e.error),
+      );
+    }
+  }
+
   Future<ApiResult<String>> signUp({required ConnectUser user}) async {
     try {
       final UserCredential firebaseUser =
@@ -91,8 +114,7 @@ class AuthenticationRepository {
   Future<ApiResult<String>> sendVerificationEmail() async {
     try {
       await FirebaseAuth.instance.currentUser?.sendEmailVerification();
-      return const ApiResult<String>.success(
-          data: 'Send email verification successful');
+      return const ApiResult<String>.success(data: 'Send email verification successful');
     } on FirebaseAuthException catch (e) {
       return ApiResult<String>.failure(
         error: NetworkExceptions.firebaseError(code: e.code),

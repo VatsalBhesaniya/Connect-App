@@ -12,16 +12,22 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<ProfileBloc>(
       create: (BuildContext context) => ProfileBloc(
         userRepository: RepositoryProvider.of<UserRepository>(context),
-        authenticationRepository:
-            RepositoryProvider.of<AuthenticationRepository>(context),
+        authenticationRepository: RepositoryProvider.of<AuthenticationRepository>(context),
       )..add(
           ProfileEvent.fetchUser(
             email: context.read<auth.User>().email!,
@@ -45,6 +51,11 @@ class ProfileScreen extends StatelessWidget {
                         _showAlert(context);
                       },
                       logoutFailure: (NetworkExceptions error) {
+                        EasyLoading.dismiss();
+                        _showAlert(context);
+                      },
+                      deleteAccountSuccess: () => Navigator.of(context).pop(),
+                      deleteAccountFailure: (NetworkExceptions error) {
                         EasyLoading.dismiss();
                         _showAlert(context);
                       },
@@ -78,21 +89,24 @@ class ProfileScreen extends StatelessWidget {
                                     const SizedBox(height: 10.0),
                                     _buildUserName(user.username),
                                     const SizedBox(height: 20.0),
-                                    _buildProfileItem(
-                                        Icons.mail_outline_rounded, user.email),
+                                    _buildProfileItem(Icons.mail_outline_rounded, user.email),
                                     const SizedBox(height: 10.0),
-                                    _buildProfileItem(
-                                        Icons.person_outline_rounded,
-                                        user.gender),
+                                    _buildProfileItem(Icons.person_outline_rounded, user.gender),
                                     const SizedBox(height: 10.0),
-                                    _buildProfileItem(
-                                        Icons.today_rounded, user.birthDate),
+                                    _buildProfileItem(Icons.today_rounded, user.birthDate),
                                     const SizedBox(height: 20.0),
                                   ],
                                 ),
                               ),
                             ),
-                            _buildLogoutButton(context),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                _buildDeleteAccountButton(context),
+                                const SizedBox(width: 20.0),
+                                _buildLogoutButton(context),
+                              ],
+                            ),
                             const SizedBox(height: 20.0),
                           ],
                         );
@@ -120,8 +134,7 @@ class ProfileScreen extends StatelessWidget {
               builder: (BuildContext ctx) {
                 return BlocProvider<EditProfileBloc>(
                   create: (_) => EditProfileBloc(
-                    userRepository:
-                        RepositoryProvider.of<UserRepository>(context),
+                    userRepository: RepositoryProvider.of<UserRepository>(context),
                   )..add(EditProfileEvent.editProfile(user: user)),
                   child: EditProfileScreen(),
                 );
@@ -239,6 +252,81 @@ class ProfileScreen extends StatelessWidget {
           fontSize: 16.0,
         ),
       ),
+    );
+  }
+
+  Widget _buildDeleteAccountButton(BuildContext context) {
+    return MaterialButton(
+      onPressed: () {
+        _showDeleteAccountDialog(context);
+      },
+      padding: const EdgeInsets.symmetric(
+        horizontal: 20.0,
+        vertical: 10.0,
+      ),
+      color: Colors.redAccent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(50.0),
+      ),
+      clipBehavior: Clip.antiAlias,
+      elevation: 4.0,
+      child: Text(
+        'Delete Account',
+        style: TextStyles().varelaRoundTextStyle(
+          color: Colors.white,
+          fontSize: 16.0,
+        ),
+      ),
+    );
+  }
+
+  void _showDeleteAccountDialog(BuildContext context) {
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext ctx) {
+        return AlertDialog(
+          title: const Text('Delete Account'),
+          content: TextField(
+            controller: _passwordController,
+            obscureText: true,
+            style: TextStyles().latoTextStyle(),
+            decoration: InputDecoration(
+              hintText: 'Password',
+              hintStyle: TextStyles().latoTextStyle(),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(50),
+                borderSide: BorderSide.none,
+              ),
+              filled: true,
+              fillColor: Colors.grey[200],
+              contentPadding: const EdgeInsets.all(16),
+              errorStyle: const TextStyle(
+                color: Colors.red,
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                context.read<ProfileBloc>().add(
+                      ProfileEvent.deleteAccountSubmitted(
+                        user: context.read<ConnectUser>(),
+                        password: _passwordController.text.trim(),
+                      ),
+                    );
+              },
+              child: const Text('Delete'),
+            ),
+          ],
+        );
+      },
     );
   }
 

@@ -7,7 +7,14 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: const FirebaseOptions(
+      apiKey: 'AIzaSyAMOBi-xg92fQxFQ5XHzyaYgSmq05ISAKI',
+      appId: '1:721996489807:web:49da3c79334e3ba202b63a',
+      messagingSenderId: '721996489807',
+      projectId: 'connect-prod-76d73',
+    ),
+  );
   EasyLoading.instance
     ..displayDuration = const Duration(milliseconds: 2000)
     ..indicatorType = EasyLoadingIndicatorType.circle
