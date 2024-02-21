@@ -6,4 +6,8 @@ class ProfileEvent with _$ProfileEvent {
     required String email,
   }) = _FetchUser;
   const factory ProfileEvent.logoutSubmitted() = _LogoutSubmitted;
+  const factory ProfileEvent.deleteAccountSubmitted({
+    required ConnectUser user,
+    required String password,
+  }) = _DeleteAccountSubmitted;
 }

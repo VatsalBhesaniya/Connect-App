@@ -21,13 +21,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         super(const ProfileState.initial()) {
     on<_FetchUser>(_onFetchUser);
     on<_LogoutSubmitted>(_onLogoutSubmitted);
+    on<_DeleteAccountSubmitted>(_onDeleteAccountSubmitted);
   }
 
   final UserRepository _userRepository;
   final AuthenticationRepository _authenticationRepository;
 
-  Future<void> _onFetchUser(
-      _FetchUser event, Emitter<ProfileState> emit) async {
+  Future<void> _onFetchUser(_FetchUser event, Emitter<ProfileState> emit) async {
     emit(const ProfileState.loadInProgress());
     final ApiResult<ConnectUser?> result = await _userRepository.fetchUser(
       email: event.email,
@@ -37,8 +37,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         if (user == null) {
           emit(
             const ProfileState.fetchUserFailure(
-                error: NetworkExceptions.defaultError(
-                    error: 'Something went wrong.')),
+                error: NetworkExceptions.defaultError(error: 'Something went wrong.')),
           );
         } else {
           emit(ProfileState.fetchUserSuccess(user: user));
@@ -50,8 +49,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     );
   }
 
-  Future<void> _onLogoutSubmitted(
-      _LogoutSubmitted event, Emitter<ProfileState> emit) async {
+  Future<void> _onLogoutSubmitted(_LogoutSubmitted event, Emitter<ProfileState> emit) async {
     final ApiResult<String?> result = await _authenticationRepository.logOut();
 
     result.when(
@@ -60,6 +58,23 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       },
       failure: (NetworkExceptions error) {
         ProfileState.logoutFailure(error: error);
+      },
+    );
+  }
+
+  Future<void> _onDeleteAccountSubmitted(
+      _DeleteAccountSubmitted event, Emitter<ProfileState> emit) async {
+    final ApiResult<String?> result = await _authenticationRepository.deleteAccount(
+      user: event.user,
+      password: event.password,
+    );
+
+    result.when(
+      success: (String? data) {
+        emit(const ProfileState.deleteAccountSuccess());
+      },
+      failure: (NetworkExceptions error) {
+        ProfileState.deleteAccountFailure(error: error);
       },
     );
   }

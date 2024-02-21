@@ -14,4 +14,8 @@ class ProfileState with _$ProfileState {
   const factory ProfileState.logoutFailure({
     required NetworkExceptions error,
   }) = _LogoutFailure;
+  const factory ProfileState.deleteAccountSuccess() = _DeleteAccountSuccess;
+  const factory ProfileState.deleteAccountFailure({
+    required NetworkExceptions error,
+  }) = _DeleteAccountFailure;
 }
