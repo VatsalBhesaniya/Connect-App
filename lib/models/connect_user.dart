@@ -18,7 +18,7 @@ class ConnectUser with _$ConnectUser {
     required String gender,
     required String birthDate,
     required String email,
-    @JsonKey(ignore: true) String? password,
+    @JsonKey(includeFromJson: false, includeToJson: false) String? password,
     required int createdAt,
     List<Conversation>? conversations,
   }) = _ConnectUser;

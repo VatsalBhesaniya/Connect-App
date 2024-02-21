@@ -269,6 +269,9 @@ class _SignupScreenState extends State<SignupScreen> {
             backgroundColor: MaterialStateProperty.all<Color>(
               Colors.blueGrey,
             ),
+            foregroundColor: MaterialStateProperty.all<Color>(
+              Colors.white,
+            ),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(50.0),

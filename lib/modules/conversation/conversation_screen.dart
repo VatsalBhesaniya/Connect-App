@@ -285,7 +285,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
     if (message.idFrom == widget.currentUserId) {
       return userMessages(message);
     } else {
-      if ((message.unreadBy).contains(widget.currentUserId)) {
+      if (message.unreadBy.contains(widget.currentUserId)) {
         final List<String> unreadBy = <String>[...message.unreadBy];
         unreadBy.remove(widget.currentUserId);
         context

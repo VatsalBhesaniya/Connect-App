@@ -128,12 +128,10 @@ class AuthenticationRepository {
 
   Future<ApiResult<String?>> sendResetPasswordEmail(String email) async {
     try {
-      final List<String> signInMethods =
-          await FirebaseAuth.instance.fetchSignInMethodsForEmail(email);
-      if (signInMethods.isNotEmpty) {
-        await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
-        return const ApiResult<String?>.success(data: null);
-      } else {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      return const ApiResult<String?>.success(data: null);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
         return const ApiResult<String>.failure(
           error: NetworkExceptions.firebaseError(
             message: 'No user found with this email.',
@@ -141,7 +139,6 @@ class AuthenticationRepository {
           ),
         );
       }
-    } on FirebaseAuthException catch (e) {
       return ApiResult<String>.failure(
         error: NetworkExceptions.firebaseError(code: e.code),
       );

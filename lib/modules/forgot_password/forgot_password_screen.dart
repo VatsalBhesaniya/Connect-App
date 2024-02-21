@@ -45,8 +45,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                       orElse: () => null,
                     );
                   },
-                  buildWhen: (ForgotPasswordState previous,
-                      ForgotPasswordState current) {
+                  buildWhen: (ForgotPasswordState previous, ForgotPasswordState current) {
                     return current.maybeWhen(
                       emailValidationSuccess: (bool isEmailValid) => true,
                       orElse: () => false,
@@ -55,8 +54,9 @@ class ForgotPasswordScreen extends StatelessWidget {
                   builder: (BuildContext context, ForgotPasswordState state) {
                     return state.maybeWhen(
                       initial: () {
-                        context.read<ForgotPasswordBloc>().add(
-                            const ForgotPasswordEvent.emailChanged(email: ''));
+                        context
+                            .read<ForgotPasswordBloc>()
+                            .add(const ForgotPasswordEvent.emailChanged(email: ''));
                         return const SizedBox();
                       },
                       emailValidationSuccess: (bool isEmailValid) {
@@ -87,9 +87,9 @@ class ForgotPasswordScreen extends StatelessWidget {
           controller: _emailController,
           hintText: 'Email',
           onChanged: (String value) {
-            context
-                .read<ForgotPasswordBloc>()
-                .add(ForgotPasswordEvent.emailChanged(email: value));
+            context.read<ForgotPasswordBloc>().add(
+                  ForgotPasswordEvent.emailChanged(email: value),
+                );
           },
         ),
         _buildSendButton(context, isEmailValid),
@@ -112,8 +112,7 @@ class ForgotPasswordScreen extends StatelessWidget {
           height: 20,
         ),
         TextWidget().latoTextWidget(
-          text:
-              'Enter your registerd email below to recieve password reset link',
+          text: 'Enter your registerd email below to recieve password reset link',
           textAlign: TextAlign.center,
           color: Colors.grey[600],
           fontSize: 16.0,
@@ -166,8 +165,10 @@ class ForgotPasswordScreen extends StatelessWidget {
           onTap: () {
             Navigator.pop(context);
           },
-          child:
-              TextWidget().latoTextWidget(text: 'Sign in', color: Colors.blue),
+          child: TextWidget().latoTextWidget(
+            text: 'Sign in',
+            color: Colors.blue,
+          ),
         ),
       ],
     );
@@ -183,8 +184,10 @@ class ForgotPasswordScreen extends StatelessWidget {
             onPressed: isEmailValid
                 ? () async {
                     context.read<ForgotPasswordBloc>().add(
-                        ForgotPasswordEvent.resendEmailSubmitted(
-                            email: _emailController.text.trim()));
+                          ForgotPasswordEvent.resendEmailSubmitted(
+                            email: _emailController.text.trim(),
+                          ),
+                        );
                   }
                 : null,
             style: ButtonStyle(
@@ -196,6 +199,9 @@ class ForgotPasswordScreen extends StatelessWidget {
               ),
               backgroundColor: MaterialStateProperty.all<Color>(
                 Colors.blueGrey,
+              ),
+              foregroundColor: MaterialStateProperty.all<Color>(
+                Colors.white,
               ),
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
@@ -218,7 +224,7 @@ class ForgotPasswordScreen extends StatelessWidget {
     final String error = NetworkExceptions.getErrorMessage(exception);
     late String alertMessage;
     if (error == 'No user found with this email.') {
-      alertMessage = 'Invalid email';
+      alertMessage = 'No user found with this email.';
     } else {
       alertMessage = 'Something went wrong. Please try again.';
     }
