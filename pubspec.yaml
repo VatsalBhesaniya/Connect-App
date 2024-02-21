@@ -31,6 +31,7 @@ dependencies:
   firebase_auth: ^4.15.3
   firebase_core: ^2.24.2
   firebase_storage: ^11.5.6
+  flutter_dotenv: ^5.1.0
   flutter_easyloading: ^3.0.3
   geocoding: ^2.0.2
   geolocator: ^10.1.0
@@ -75,6 +76,7 @@ flutter:
   assets:
     - assets/map_night.json
     - assets/images/
+    - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
